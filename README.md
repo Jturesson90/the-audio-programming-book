@@ -1,14 +1,26 @@
 # the-audio-programming-book
 
-## Some of the more popular functions from the standard C library
+##
 
-[IBM-Extensions standard C library functions table by name](https://www.ibm.com/docs/en/i/7.4?topic=extensions-standard-c-library-functions-table-by-name)
+### Table 0.2 - The ANSI C format specifiers
 
-### Some of the more popular functions from the standard C library
+| Specifier | Type                | Print                    |
+| :-------- | ------------------- | ------------------------ |
+| %c        | char                | Single character         |
+| %d (%i)   | int                 | Signed integer           |
+| %e (%E)   | float or double     | Exponential format       |
+| %f        | float or double     | Signed decimal           |
+| %g (%G)   | float or double     | Use %f or %e as required |
+| %o        | int                 | Unsigned octal value     |
+| %s        | string (char array) | Sequence of characters   |
+| %u        | int                 | Unsigned decimal         |
+| %x (%X)   | int                 | Unsigned hex value       |
+
+### Table 0.6 - Some of the more popular functions from the standard C library
 
 |                     |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| <br /> **stdio.h**  | <br /> **I/O functions**                                      |
+| **stdio.h**         | **I/O functions**                                             |
 | getchar()           | Returns next character typed on keyboard                      |
 | putchar()           | Outputs a single character to screen                          |
 | printf()            | Outputs to stdout                                             |
