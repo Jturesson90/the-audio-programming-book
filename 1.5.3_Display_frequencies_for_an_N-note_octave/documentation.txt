@@ -1,0 +1,11 @@
+Displays the frequencies of equal-tempered intercals for N notes per octave.
+
+If N is 12, we will get the notes of the standard chromatic scale. Another polular division is 19 notes.
+
+Usage: nscale notes midinote
+
+Notes: how many steps it takes for the full range
+
+Midinote: starting midinote
+
+Interval: 2.0 is one octave, 4.0 is two octaves and 1.5 is half an octave
