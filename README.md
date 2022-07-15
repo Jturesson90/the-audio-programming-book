@@ -1,6 +1,10 @@
 # the-audio-programming-book
 
-##
+## Install
+
+[Install MSYS2](https://www.msys2.org/)
+
+- pacman -Syu
 
 ### Table 0.2 - The ANSI C format specifiers
 
