@@ -106,13 +106,13 @@ int main(int argc, char *argv[])
 	printf("copying....\n");
 
 	/* single-frame loop to do copy: report any read/write errors */
-	int bufferSize = 12;
+	int bufferSize = 14;
 	framesread = psf_sndReadFloatFrames(ifd, frame, bufferSize);
 	totalread = 0; /* count sample frames as they are copied */
 	while (framesread > 0)
 	{
 		totalread += framesread;
-		if (psf_sndWriteFloatFrames(ofd, frame, bufferSize) != bufferSize)
+		if (psf_sndWriteFloatFrames(ofd, frame, framesread) != framesread)
 		{
 			printf("Error writing to outfile\n");
 			error++;
