@@ -1,30 +1,16 @@
-/* Copyright (c) 2009 Richard Dobson
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-*/
 /* sf2float.c :  convert soundfile to floats using portsf library */
 #include <stdio.h>
 #include <stdlib.h>
 #include <portsf.h>
+
+#define NFRAMES (1024)
+enum
+{
+	ARG_PROGNAME,
+	ARG_INFILE,
+	ARG_OUTFILE,
+	ARG_NARGS
+};
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +23,7 @@ int main(int argc, char *argv[])
 	PSF_CHPEAK *peaks = NULL;
 	float *frame = NULL;
 	psf_format outformat = PSF_FMT_UNKNOWN;
+	unsigned long nFrames = NFRAMES;
 
 	printf("SF2FLOAT: convert soundfile to 32bit floats format\n");
 
@@ -54,10 +41,10 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	ifd = psf_sndOpen(argv[1], &props, 0);
+	ifd = psf_sndOpen(argv[ARG_INFILE], &props, 0);
 	if (ifd < 0)
 	{
-		printf("Error: unable to open infile %s\n", argv[1]);
+		printf("Error: unable to open infile %s\n", argv[ARG_INFILE]);
 		return 1;
 	}
 	/* we now have a resource, so we use goto hereafter on hitting any error */
@@ -68,27 +55,27 @@ int main(int argc, char *argv[])
 	}
 	props.samptype = PSF_SAMP_IEEE_FLOAT;
 	/* check file extension of outfile name, so we use correct output file format*/
-	outformat = psf_getFormatExt(argv[2]);
+	outformat = psf_getFormatExt(argv[ARG_OUTFILE]);
 	if (outformat == PSF_FMT_UNKNOWN)
 	{
 		printf("outfile name %s has unknown format.\n"
 			   "Use any of .wav, .aiff, .aif, .afc, .aifc\n",
-			   argv[2]);
+			   argv[ARG_OUTFILE]);
 		error++;
 		goto exit;
 	}
 	props.format = outformat;
 
-	ofd = psf_sndCreate(argv[2], &props, 0, 0, PSF_CREATE_RDWR);
+	ofd = psf_sndCreate(argv[ARG_OUTFILE], &props, 0, 0, PSF_CREATE_RDWR);
 	if (ofd < 0)
 	{
-		printf("Error: unable to create outfile %s\n", argv[2]);
+		printf("Error: unable to create outfile %s\n", argv[ARG_OUTFILE]);
 		error++;
 		goto exit;
 	}
 
 	/* allocate space for one sample frame */
-	frame = (float *)malloc(props.chans * sizeof(float));
+	frame = (float *)malloc(nFrames * props.chans * sizeof(float));
 	if (frame == NULL)
 	{
 		puts("No memory!\n");
@@ -106,8 +93,8 @@ int main(int argc, char *argv[])
 	printf("copying....\n");
 
 	/* single-frame loop to do copy: report any read/write errors */
-	int bufferSize = 14;
-	framesread = psf_sndReadFloatFrames(ifd, frame, bufferSize);
+
+	framesread = psf_sndReadFloatFrames(ifd, frame, nFrames);
 	totalread = 0; /* count sample frames as they are copied */
 	while (framesread > 0)
 	{
@@ -119,7 +106,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 		/*  <----  do any processing here! ------> */
-		framesread = psf_sndReadFloatFrames(ifd, frame, bufferSize);
+		framesread = psf_sndReadFloatFrames(ifd, frame, nFrames);
 	}
 	if (framesread < 0)
 	{
@@ -127,7 +114,7 @@ int main(int argc, char *argv[])
 		error++;
 	}
 	else
-		printf("Done. %d sample frames copied to %s\n", totalread, argv[2]);
+		printf("Done. %d sample frames copied to %s\n", totalread, argv[ARG_OUTFILE]);
 	/* report PEAK values to user */
 	if (psf_sndReadPeaks(ofd, peaks, NULL) > 0)
 	{

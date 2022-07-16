@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul 15 12:02:13 2022
+# Make data base, printed on Sat Jul 16 09:54:35 2022
 
 # Variables
 
@@ -41,7 +41,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_21176_ZNVEMDMZKNPEVSNL
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_13336_OYQPUQXVOVTNCIBE
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -93,7 +93,7 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 21176
+VSCODE_PID = 13336
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # automatic
@@ -158,8 +158,6 @@ USERDOMAIN = JESPERS-ASUS
 GNUMAKEFLAGS := 
 # environment
 OS = Windows_NT
-# environment
-__COMPAT_LAYER = DetectorsAppHealth
 # makefile
 .DEFAULT_GOAL := 
 # default
@@ -207,7 +205,7 @@ PROCESSOR_REVISION = 5000
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD
 # variable set hash-table stats:
-# Load=97/1024=9%, Rehash=0, Collisions=9/121=7%
+# Load=96/1024=9%, Rehash=0, Collisions=9/120=8%
 
 # Pattern-specific Variable Values
 
@@ -215,9 +213,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD
 
 # Directories
 
-# . (key c:/Develop/AudioProgamming/the-audio-programming-book, mtime 1657878905): 12 files, no impossibilities.
+# . (key c:/Develop/AudioProgamming/the-audio-programming-book, mtime 1657879404): 13 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -274,12 +272,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 162 B / avg = 8 B
-# current buf: size = 8174 B / used = 162 B / count = 19 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 20 / storage = 171 B / avg = 8 B
+# current buf: size = 8174 B / used = 171 B / count = 20 / avg = 8 B
 
-# strcache performance: lookups = 22 / hit rate = 13%
+# strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=0/22=0%
-# Finished Make data base on Fri Jul 15 12:02:13 2022
+# Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
+# Finished Make data base on Sat Jul 16 09:54:35 2022
 
  

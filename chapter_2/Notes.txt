@@ -1,0 +1,8 @@
+Building a C/C++ Program
+
+Stage 1: Define variables.
+Stage 2: Obtain and validate arguments from user.
+Stage 3: Allocate memory, open infile and outfile. 
+Stage 4: Perform main processing loop.
+Stage 5: Report to the user.
+Stage 6. Close files, free memory.
