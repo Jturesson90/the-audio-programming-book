@@ -68,7 +68,8 @@ int main(int argc, char *argv[])
     float *inframe = NULL;
     float *outframe = NULL;
 
-    PANPOS pos;
+    double panpos;
+    PANPOS thispos;
     /* TODO: define an output frame buffer if channel width different 	*/
 
     /* STAGE 2 */
@@ -109,8 +110,8 @@ int main(int argc, char *argv[])
         printf("unable to start portsf\n");
         return 1;
     }
-    pos = atof(argv[ARG_PANPOS]);
-    if (pos < -1.0 || pos > 1.0)
+    panpos = atof(argv[ARG_PANPOS]);
+    if (panpos < -1.0 || panpos > 1.0)
     {
         printf("Error: panpos value out of range -1 to +1\n");
         error++;
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
     /* TODO: any other argument processing and setup of variables,
        output buffer, etc., before creating outfile
     */
-
+    outprops.chans = 2;
     /* handle outfile */
     /* TODO:  make any changes to outprops here  */
 
@@ -170,6 +171,13 @@ int main(int argc, char *argv[])
     }
 
     /* TODO: if outchans != inchans, allocate outframe, and modify main loop accordingly */
+    outframe = (float *)malloc(nframes * outprops.chans * sizeof(float));
+    if (outframe == NULL)
+    {
+        puts("No memory!\n");
+        error++;
+        goto exit;
+    }
 
     outfile = psf_sndCreate(argv[ARG_OUTFILE], &outprops, 0, 0, PSF_CREATE_RDWR);
     if (outfile < 0)
@@ -181,13 +189,19 @@ int main(int argc, char *argv[])
     /* STAGE 5 */
     printf("processing....\n");
     /* TODO: init any loop-related variables */
-
+    thispos = simplepan(panpos);
     while ((framesread = psf_sndReadFloatFrames(infile, inframe, nframes)) > 0)
     {
-
         /* <--------  add buffer processing here ------>  */
+        int i,
+            out_i;
+        for (i = 0, out_i = 0; i < framesread; i++)
+        {
+            outframe[out_i++] = (float)(inframe[i] * thispos.left);
+            outframe[out_i++] = (float)(inframe[i] * thispos.right);
+        }
 
-        if (psf_sndWriteFloatFrames(outfile, inframe, framesread) != framesread)
+        if (psf_sndWriteFloatFrames(outfile, outframe, framesread) != framesread)
         {
             printf("Error writing to outfile\n");
             error++;
@@ -226,6 +240,8 @@ exit:
             printf("%s: Warning: error closing outfile %s\n", argv[ARG_PROGNAME], argv[ARG_OUTFILE]);
     if (inframe)
         free(inframe);
+    if (outframe)
+        free(outframe);
     if (peaks)
         free(peaks);
     /*TODO: cleanup any other resources */
