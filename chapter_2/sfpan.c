@@ -46,7 +46,20 @@ typedef struct panpos
     double left;
     double right;
 } PANPOS;
-
+PANPOS constpower(double position)
+{
+    PANPOS pos;
+    /* pi/2: 1/4 cycle of a sinusoid */
+    const double piovr2 = 4.0 * atan(1.0) * 0.5;
+    const double root2over2 = sqrt(2.0) * 0.5;
+    /* scale position to fit the pi/2 range */
+    double thispos = position * piovr2;
+    /* Each channel uses a 1/4 pf a cycle */
+    double angle = thispos * 0.5;
+    pos.left = root2over2 * (cos(angle) - sin(angle));
+    pos.right = root2over2 * (cos(angle) + sin(angle));
+    return pos;
+}
 PANPOS simplepan(double position)
 {
     PANPOS pos;
@@ -236,7 +249,7 @@ int main(int argc, char *argv[])
         for (i = 0, out_i = 0; i < framesread; i++)
         {
             stereopos = val_at_brktime(points, size, sampletime);
-            pos = simplepan(stereopos);
+            pos = constpower(stereopos);
             outframe[out_i++] = (float)(inframe[i] * pos.left);
             outframe[out_i++] = (float)(inframe[i] * pos.right);
             sampletime += timeincr;
